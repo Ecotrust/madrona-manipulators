@@ -51,7 +51,7 @@ def display_kml(geom):
         geom_kml = geom.kml
 
     return """<?xml version="1.0" encoding="UTF-8"?>
-<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<kml xmlns="https://www.opengis.net/kml/2.2" xmlns:gx="https://www.google.com/kml/ext/2.2" xmlns:kml="https://www.opengis.net/kml/2.2" xmlns:atom="https://www.w3.org/2005/Atom">
     <Placemark>
         <Style>
             <LineStyle>
@@ -68,7 +68,7 @@ def display_kml(geom):
 
 def parsekmlpoly(kmlstring):
     e = fromstring(kmlstring)
-    coords = coords = e.find('{http://www.opengis.net/kml/2.2}Placemark/{http://www.opengis.net/kml/2.2}Polygon/{http://www.opengis.net/kml/2.2}outerBoundaryIs/{http://www.opengis.net/kml/2.2}LinearRing/{http://www.opengis.net/kml/2.2}coordinates').text
+    coords = coords = e.find('{https://www.opengis.net/kml/2.2}Placemark/{https://www.opengis.net/kml/2.2}Polygon/{https://www.opengis.net/kml/2.2}outerBoundaryIs/{https://www.opengis.net/kml/2.2}LinearRing/{https://www.opengis.net/kml/2.2}coordinates').text
     coords = coords.lstrip(' ').rstrip(' ').replace('\n', '').replace('\t', '')
     lra = []
     for yxz in coords.split(' '):
@@ -81,7 +81,7 @@ def parsekmlpoly(kmlstring):
 
 def parsekmllinestring(kmlstring):
     e = fromstring(kmlstring)
-    coords = coords = e.find('{http://www.opengis.net/kml/2.2}Placemark/{http://www.opengis.net/kml/2.2}LineString/{http://www.opengis.net/kml/2.2}coordinates').text
+    coords = coords = e.find('{https://www.opengis.net/kml/2.2}Placemark/{https://www.opengis.net/kml/2.2}LineString/{https://www.opengis.net/kml/2.2}coordinates').text
     coords = coords.lstrip(' ').rstrip(' ').replace('\n', '').replace('\t', '')
     lra = []
     for yxz in coords.split(' '):
@@ -93,7 +93,7 @@ def parsekmllinestring(kmlstring):
 
 def parsekmlpoint(kmlstring):
     e = fromstring(kmlstring)
-    coords = coords = e.find('{http://www.opengis.net/kml/2.2}Placemark/{http://www.opengis.net/kml/2.2}Point/{http://www.opengis.net/kml/2.2}coordinates').text
+    coords = coords = e.find('{https://www.opengis.net/kml/2.2}Placemark/{https://www.opengis.net/kml/2.2}Point/{https://www.opengis.net/kml/2.2}coordinates').text
     coords = coords.lstrip(' ').rstrip(' ').replace('\n', '').replace('\t', '')
     lra = []
     for yxz in coords.split(' '):
@@ -590,7 +590,7 @@ class ClipToGraticuleManipulator(BaseManipulator):
             try:
                 box = Polygon(LinearRing([Point(float(self.west), float(self.north)),
                                           Point(float(self.east), float(self.north)),
-                                          Point(float(self.east), float(self.south)), 
+                                          Point(float(self.east), float(self.south)),
                                           Point(float(self.west), float(self.south)),
                                           Point(float(self.west), float(self.north))]))
                 box.set_srid(settings.GEOMETRY_CLIENT_SRID)
