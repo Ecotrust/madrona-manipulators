@@ -137,11 +137,7 @@ def clean_geometry(geom):
     row = cursor.fetchone()
     newgeom = fromstr(row[0])
 
-    if geom.geom_type == "Polygon":
-        # sometimes, clean returns a multipolygon
-        geometry = LargestPolyFromMulti(newgeom)
-    else:
-        geometry = newgeom
+    geometry = newgeom
 
     if not geometry.valid:
         raise Exception("Unable to clean this geometry feature.")

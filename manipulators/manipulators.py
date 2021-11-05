@@ -159,10 +159,13 @@ class BaseManipulator(object):
         except Exception as e:
             raise self.InvalidGeometryException(e.message)
 
+        for idx, target_geom in enumerate(target):
+            if not target_geom.valid:
+                target[idx] = target_geom.buffer(0)
+                if not target_geom.valid:
+                    raise self.InvalidGeometryException()
         if not target.valid:
-            target = target.buffer(0)
-            if not target.valid:
-                raise self.InvalidGeometryException()
+            raise self.InvalidGeometryException()
 
         target.srid = settings.GEOMETRY_CLIENT_SRID
         return target
