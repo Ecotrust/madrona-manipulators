@@ -104,9 +104,9 @@ def parsekmlpoint(kmlstring):
     return point
 
 def parsekml(shape):
-    if shape.find('Polygon') is not -1:
+    if shape.find('Polygon') != -1:
         return parsekmlpoly(shape)
-    elif shape.find('LineString') is not -1:
+    elif shape.find('LineString') != -1:
         return parsekmllinestring(shape)
     else:
         # point
@@ -451,7 +451,7 @@ class ClipToStudyRegionManipulator(BaseManipulator):
 
         #extract study_region geometry
         #study_region argument is FOR UNIT-TESTING PURPOSES ONLY, otherwise we access the database
-        if self.study_region is not None:
+        if self.study_region != None:
             try:
                 study_region = GEOSGeometry(self.study_region)
                 study_region.set_srid(settings.GEOMETRY_CLIENT_SRID)
@@ -481,7 +481,7 @@ class ClipToStudyRegionManipulator(BaseManipulator):
         elif target_shape.geom_type == 'Point' and not clipped_shape.empty:
             out_geom = clipped_shape
 
-        if out_geom is None:
+        if out_geom == None:
             message = "clipped geometry is empty (there was no intersection/overlap with study region)"
             status_html = self.do_template("2")
             raise self.HaltManipulations(message, status_html)
@@ -614,13 +614,13 @@ class ClipToGraticuleManipulator(BaseManipulator):
             #we will use target_shape.extent to fill in any missing graticule values
             geom_extent = shape.extent
             #fill in any missing graticule params with geom_extent (xmin, ymin, xmax, ymax) values
-            if self.north is None:
+            if self.north == None:
                 self.north = geom_extent[3]
-            if self.south is None:
+            if self.south == None:
                 self.south = geom_extent[1]
-            if self.east is None:
+            if self.east == None:
                 self.east = geom_extent[2]
-            if self.west is None:
+            if self.west == None:
                 self.west = geom_extent[0]
 
     class Form(forms.Form):
