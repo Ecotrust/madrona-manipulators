@@ -1,5 +1,6 @@
 from django.contrib.gis.geos import Polygon
 from django.db import connection, ProgrammingError
+from django.db.utils import InternalError
 from django.contrib.gis.geos import fromstr
 from math import pi
 from django.conf import settings
@@ -125,13 +126,16 @@ def clean_geometry(geom):
 
     cursor = connection.cursor()
     try:
-        query = "select cleangeometry(st_geomfromewkt(\'%s\')) as geometry" % geom.ewkt
+        query = "select st_cleangeometry(st_geomfromewkt(\'%s\')) as geometry" % geom.ewkt
         cursor.execute(query)
-    except ProgrammingError:
+    except (ProgrammingError, InternalError):
         try:
-            query = "select st_cleangeometry(st_geomfromewkt(\'%s\')) as geometry" % geom.ewkt
+            # cleangeometry became st_cleangeometry in PostGIS v2(?)
+            # As of PostGIS v3 + DJ4.2, using the wrong (st_)cleangeometry
+            # terminates the transation, so we START with assuming the latest
+            query = "select cleangeometry(st_geomfromewkt(\'%s\')) as geometry" % geom.ewkt
             cursor.execute(query)
-        except ProgrammingError:
+        except (ProgrammingError, InternalError):
             return geom
 
     row = cursor.fetchone()
