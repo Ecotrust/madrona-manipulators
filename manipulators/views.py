@@ -69,7 +69,7 @@ def multi_generic_manipulator_view(request, manipulators):
                     if form.is_valid():
                         initial_result = form.manipulation
                     else: # invalid parameters - bounce form back to user
-                        return HttpResponse(json.dumps({"message": "form is not valid (missing arguments?)", "html": render_to_string(request, 'common/base_form.html', {'form': form}).content}))
+                        return HttpResponse(json.dumps({"message": "form is not valid (missing arguments?)", "html": render_to_string('common/base_form.html', {'form': form},request).content}))
                 else: # no form exists - run this manipulator directly, passing the POST params directly as kwargs
                     manip_inst = manipClass(**kwargs)
                     initial_result = manip_inst.manipulate()
